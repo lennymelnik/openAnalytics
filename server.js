@@ -128,10 +128,64 @@ app.post('/addView', async (req, res) => {
         var results = await dbo.collection("properties").find({id : req.headers.id}).toArray()
         if(results[0]){
             //Token has been confirmed
-            var path = ".paths"+req.body.path
+            var path = "paths."+req.body.path
 
             var propertyObj = {$inc: {totalVisits : 1, [path] : 1}}
             var evaluations = await dbo.collection("properties").updateOne({id : req.headers.id},propertyObj)
+
+            res.send({status: true});
+        }else{
+            res.send({status: false, message: "Token not authorized"});
+        }
+    }else{
+        res.send({status: false, message: "No token provided"});
+    }
+  
+});
+app.post('/createEvent', async (req, res) => {
+    if(req.headers.token){
+        var user = await dbo.collection("accounts").find({token: req.headers.token}).toArray()
+        var property = await dbo.collection("properties").find({id: req.headers.id}).toArray()
+        console.log(user[0], property[0])
+        if(property[0] && user[0] && property[0].admins.includes(user[0].id)){
+            //Token has been confirmed
+        
+
+            var eventObj = {
+                type : req.body.type,
+                desc: req.body.desc,
+                action : req.body.action,
+                times : 0,
+                id : uniqid()
+            }
+            var propertyObj = {$set: {['events.'+eventObj.id] : eventObj}}
+
+
+
+            var evaluations = await dbo.collection("properties").updateOne({id : req.headers.id},propertyObj)
+
+            res.send({status: true});
+        }else{
+            res.send({status: false, message: "Token not authorized"});
+        }
+    }else{
+        res.send({status: false, message: "No token provided"});
+    }
+  
+});
+app.post('/addEvent', async (req, res) => {
+    if(req.headers.id){
+        var event = "events."+req.headers.id
+
+        var results = await dbo.collection("properties").find({[event] : {"$exists": true}}).toArray()
+    
+        if(results[0]){
+            //Token has been confirmed
+            var event = "events."+req.headers.id+".times"
+
+            var propertyObj = {$inc: {[event] : 1}}
+            console.log(propertyObj)
+            var evaluations = await dbo.collection("properties").updateOne({id : results[0].id},propertyObj)
 
             res.send({status: true});
         }else{
