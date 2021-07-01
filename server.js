@@ -129,6 +129,7 @@ app.post('/addView', async (req, res) => {
         if(results[0]){
             //Token has been confirmed
             var path = "paths."+req.body.path
+            console.log(path)
 
             var propertyObj = {$inc: {totalVisits : 1, [path] : 1}}
             var evaluations = await dbo.collection("properties").updateOne({id : req.headers.id},propertyObj)
