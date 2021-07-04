@@ -57,7 +57,7 @@ MongoClient.connect(url, function(err, db) {
                     req.body.search = {admins : results[0].id}
                 }
                 
-                var properties = await dbo.collection("properties").find({admins: results[0].id}).toArray()
+                var properties = await dbo.collection("properties").find(req.body.search).toArray()
                 //console.log()
                 res.send({status: true,
                 data: properties
