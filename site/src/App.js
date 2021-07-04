@@ -7,6 +7,7 @@ import Login from './Components/Login';
 import Register from './Components/Register';
 import Properties from './Components/Properties/Properties';
 import { BrowserRouter, Route, Switch, useLocation} from 'react-router-dom';
+import PropertyPage from './Components/Properties/Property/PropertyPage';
 function App() {
   const serverAddress = 'https://analytics.leonardmelnik.com'
 
@@ -42,6 +43,9 @@ function App() {
     </Route>
     <Route path="/properties">
           <Properties serverAddress = {serverAddress} token={token} setToken={setToken}/>
+        </Route>
+        <Route path="/property">
+          <PropertyPage serverAddress = {serverAddress} token={token}/>
         </Route>
    
     </Switch>

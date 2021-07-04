@@ -21,6 +21,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongodb": "^3.6.9",
+    "query-string": "^7.0.1",
     "react-router-dom": "^5.2.0",
     "uniqid": "^5.3.0"
   }

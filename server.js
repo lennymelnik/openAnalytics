@@ -68,7 +68,7 @@ MongoClient.connect(url, function(err, db) {
         }
       
       
-    });
+    }); 
 app.use('/a', async (req, res) => {
     if(req.headers.token){
         var results = await dbo.collection("accounts").find({token : req.headers.token}).toArray()
