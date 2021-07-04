@@ -51,7 +51,11 @@ MongoClient.connect(url, function(err, db) {
             var results = await dbo.collection("accounts").find({token : req.headers.token}).toArray()
             if(results[0]){
                 //Token has been confirmed
-               
+                if(req.body.search){
+                    req.body.search.admins = results[0].id
+                }else{
+                    req.body.search = {admins : results[0].id}
+                }
                 
                 var properties = await dbo.collection("properties").find({admins: results[0].id}).toArray()
                 //console.log()
