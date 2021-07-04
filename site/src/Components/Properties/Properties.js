@@ -65,8 +65,8 @@ const Property = ({property, index}) => {
  
 </ul>
     </div>
-    <a href="#" class="card-link">Card link</a>
-    <a href="#" class="card-link">Another link</a>
+    <a href="#" class="card-link">Visit Property</a>
+    <a href="#" class="card-link">More Info</a>
   </div>
 </div>
 </div>

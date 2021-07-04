@@ -8,7 +8,7 @@ import Register from './Components/Register';
 import Properties from './Components/Properties/Properties';
 import { BrowserRouter, Route, Switch, useLocation} from 'react-router-dom';
 function App() {
-  const serverAddress = 'http://localhost:8080'
+  const serverAddress = 'https://analytics.leonardmelnik.com'
 
 
   const { token, setToken } = useToken();
