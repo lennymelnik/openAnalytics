@@ -12,12 +12,12 @@ app.use(express.json());
 var fs = require('fs');
 
 //Load up certificates for SSL Encryption (To enable HTTPS)
-var privateKey = fs.readFileSync('/etc/letsencrypt/live/analytics.leonardmelnik.com/privkey.pem', 'utf8');
+/*var privateKey = fs.readFileSync('/etc/letsencrypt/live/analytics.leonardmelnik.com/privkey.pem', 'utf8');
 var certificate = fs.readFileSync('/etc/letsencrypt/live/analytics.leonardmelnik.com/fullchain.pem', 'utf8');
 var credentials = {
     key: privateKey,
     cert: certificate
-};
+};*/
 
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
@@ -52,14 +52,11 @@ MongoClient.connect(url, function(err, db) {
             if(results[0]){
                 //Token has been confirmed
                
-                //persons school is 
-                schoolId = results[0].schoolId
-                req.body.search.schoolId = results[0].schoolId
-                //console.log(projection)
-                var evaluations = await dbo.collection("evaluations").find(req.body.search,{projection: projection}).toArray()
+                
+                var properties = await dbo.collection("properties").find({admins: results[0].id}).toArray()
                 //console.log()
                 res.send({status: true,
-                data: evaluations
+                data: properties
               });
             }else{
                 res.send({status: false, message: "Token not authorized", token : req.headers.token});
@@ -271,8 +268,9 @@ app.use('/login', async (req, res) => {
             if(results[0]){
                 var token = await bcrypt.hash(uniqid(), salt)
                 dbo.collection("accounts").updateOne({email : email, password : passwordHashed},{$set : {token : token}})
+                console.log("new token;", token)
                 //var searchData = await dbo.collection("searchData").find({})
-        
+                console.log("sent")
                 res.send(
                     {status: true,
                     token: token
@@ -282,6 +280,8 @@ app.use('/login', async (req, res) => {
             }
         }
        
+    }else{
+        res.send({status: false, message: "Password or username not provided"});
     }
    
   
@@ -370,8 +370,8 @@ app.post('/updateUsers', async (req, res) => {
 });
 
    //app.listen(8080)
-  //app.listen(8080)
-  var httpsServer = https.createServer(credentials, app);
-  httpsServer.listen(8080)
+  app.listen(8080)
+  //var httpsServer = https.createServer(credentials, app);
+  //httpsServer.listen(8080)
 
 }) 
