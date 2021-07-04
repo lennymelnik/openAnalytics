@@ -1,3 +1,4 @@
+import { stringify } from 'query-string';
 import React, { useState, useEffect } from 'react';
 
 import { useParams } from 'react-router-dom';
@@ -21,13 +22,14 @@ const PropertyPage = ({serverAddress, token}) => {
 }
 
 
-    async function getData() {
+    async function getData(body) {
         return fetch(serverAddress+'/get-all', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'token' : token
-          }
+          },
+          body : JSON.stringify(body)
         })
           .then(data => data.json())
        }
@@ -35,7 +37,7 @@ const PropertyPage = ({serverAddress, token}) => {
         async function runGet() {
             var body = {search : {id : getQueryVariable('id')}}
             console.log("BODY", body)
-            const dataFromServer = await getData();
+            const dataFromServer = await getData(body);
             console.log(dataFromServer)
             if(dataFromServer.status){
                 setProperty(dataFromServer.data[0]);
@@ -46,15 +48,40 @@ const PropertyPage = ({serverAddress, token}) => {
        runGet()
         
       }, []);
-    return (
-        <div>
-            <h1>{property.title}</h1>
-            {property.totalVisits}
-        </div>
+      if(property.title){
+        return (
+            <div className = "container">
+                <br />
+               <div class="shadow-sm p-3 mb-5 bg-body rounded">
+
+
+                <h1>{property.title}</h1>
+                <h4>{property.url}</h4>
+                {property.totalVisits}
+                </div>
+    <h3>Events</h3>
+    <ol class="list-group list-group-numbered">
+        {Object.keys(property.events).map((event) => (<Event event ={event } property = {property}/>))}
+        </ol>
+            </div>
+        )
+      }
+      return(
+
+        <h1>Loading</h1>
+      )
+   
+}
+const Event = ({event, property}) => {
+    return(
+  <li class="list-group-item d-flex justify-content-between align-items-start">
+    <div class="ms-2 me-auto">
+      <div class="fw-bold">{property.events[event].action}</div>
+      {property.events[event].id}
+    </div>
+    <span class="badge bg-primary rounded-pill">{property.events[event].times}</span>
+  </li>
     )
 }
-
-
-
 
 export default PropertyPage

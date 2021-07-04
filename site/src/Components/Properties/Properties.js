@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 const Properties = ({token, serverAddress, setToken}) => {
     const [properties, setProperties] = useState([])
-    
+
     async function getData() {
         return fetch(serverAddress+'/get-all', {
           method: 'GET',
@@ -54,7 +54,7 @@ const Property = ({property, index}) => {
         <div class="col">
         <div class="card" >
   <div class="card-body">
-    <h5 class="card-title">{property.title} </h5>
+    <h5 class="card-title" onClick={()=>{window.open('/property?id='+property.id)}}>{property.title} </h5>
     <h6 class="card-subtitle mb-2 text-muted">Total visits : {property.totalVisits} </h6>
     <p class="card-text">{property.desc}</p>
     <p>Id: {property.id}</p>
