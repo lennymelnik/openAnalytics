@@ -18,14 +18,25 @@ const AddProperty = ({serverAddress, token, updateProperties, setUpdate}) => {
        }
     
       const handleSubmit = async e => {
-        e.preventDefault();
-        console.log("sending")
-        const fromServer = await addProperty({
-          title, url, desc
-        });
-        if(fromServer.status){
-            setUpdate(updateProperties+1)
-        }
+          if(title != '' && url !='' && desc !=''){
+            e.preventDefault();
+            console.log("sending")
+            const fromServer = await addProperty({
+              title, url, desc
+            });
+            if(fromServer.status){
+                setUpdate(updateProperties+1)
+                document.getElementById('nameInput').value = ''//document.getElementById('nameInput').placeholder
+                document.getElementById('urlInput').value = ''//document.getElementById('urlInput').placeholder
+                document.getElementById('descInput').value = ''//document.getElementById('descInput').placeholder
+                setDesc('')
+                setTitle('')
+                setUrl('')
+            }
+          }else{
+              alert("All values must be filled in")
+          }
+      
       
       }
     return (
@@ -46,7 +57,7 @@ const AddProperty = ({serverAddress, token, updateProperties, setUpdate}) => {
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Add Property</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -54,7 +65,7 @@ const AddProperty = ({serverAddress, token, updateProperties, setUpdate}) => {
         <div class="col">
             <label for="nameInput" class="form-label">Name</label>
 
-            <input id="nameInput" type="text" class="form-control" placeholder="John Doe" aria-label="Name" onChange={(e)=>{setTitle(e.target.value)}}/>
+            <input id="nameInput" type="text" class="form-control" placeholder="openAnalytics" aria-label="Name" onChange={(e)=>{setTitle(e.target.value)}}/>
         </div>
         <div class="col">
             <label for="urlInput" class="form-label">Url</label>
@@ -63,13 +74,13 @@ const AddProperty = ({serverAddress, token, updateProperties, setUpdate}) => {
         </div>
         </div>
         <div class="mb-3">
-  <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Platform for measuring how many pickles rick can turn into" onChange={(e)=>{setDesc(e.target.value)}}></textarea>
+  <label for="descInput" class="form-label">Description</label>
+  <textarea class="form-control" id="descInput" rows="3" placeholder="Platform for measuring how many pickles rick can turn into" onChange={(e)=>{setDesc(e.target.value)}}></textarea>
 </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" onClick={handleSubmit}>Add Property</button>
+        <button type="button" class="btn btn-primary" onClick={handleSubmit} data-bs-dismiss="modal">Add Property</button>
       </div>
     </div>
   </div>
