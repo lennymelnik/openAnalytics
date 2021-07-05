@@ -1,11 +1,12 @@
 import { stringify } from 'query-string';
 import React, { useState, useEffect } from 'react';
-
+import AddEvent from './AddEvent'
 import { useParams } from 'react-router-dom';
 
 const PropertyPage = ({serverAddress, token}) => {
     //const { propertyId } = useParams();
     const [property, setProperty] = useState({})
+    const [updateProperty, setUpdate] = useState(0)
 
     function getQueryVariable(variable)
 {
@@ -47,7 +48,7 @@ const PropertyPage = ({serverAddress, token}) => {
         }
        runGet()
         
-      }, []);
+      }, [updateProperty]);
       if(property.title){
         return (
             <div className = "container">
@@ -60,6 +61,7 @@ const PropertyPage = ({serverAddress, token}) => {
                 {property.totalVisits}
                 </div>
     <h3>Events</h3>
+    <AddEvent serverAddress = {serverAddress} token = {token} updateProperty = {updateProperty} setUpdate = {setUpdate} property = {property}/>
     <ol class="list-group list-group-numbered">
         {Object.keys(property.events).map((event) => (<Event event ={event } property = {property}/>))}
         </ol>
