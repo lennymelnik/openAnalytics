@@ -175,6 +175,25 @@ app.post('/createEvent', async (req, res) => {
     }
   
 });
+app.patch('/removeProperty', async (req, res) => {
+    if(req.headers.token){
+        var user = await dbo.collection("accounts").find({token: req.headers.token}).toArray()
+        if(user[0]){
+            var property = await dbo.collection("properties").deleteOne({id : req.headers.id, admins : user[0].id})
+            console.log(user[0], property[0])
+            res.send({status: true, message: "Property with that ID has been removed"});
+
+        }else{
+         
+            res.send({status: false, message: "Token not authorized"});
+        }
+       
+        
+    }else{
+        res.send({status: false, message: "No token provided"});
+    }
+  
+});
 app.patch('/removeEvent', async (req, res) => {
     if(req.headers.token){
         var user = await dbo.collection("accounts").find({token: req.headers.token}).toArray()
