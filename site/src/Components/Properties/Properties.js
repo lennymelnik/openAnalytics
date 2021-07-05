@@ -68,6 +68,8 @@ const Property = ({property, index, serverAddress, updateProperties, setUpdate, 
     </div>
 
     <a href="#" class="btn btn-success card-link" data-bs-toggle="collapse" data-bs-target={"#collapse" + index} aria-expanded="false" aria-controls={"collapse"+index}>View Events</a>
+    <a class="btn btn-danger card-link" data-bs-toggle="modal" data-bs-target={"#"+property.id}>Delete Property</a>
+
     <DeleteProperty token = {token} serverAddress = {serverAddress} property = {property} updateProperties = {updateProperties} setUpdate = {setUpdate}/>
   </div>
 </div>
@@ -75,10 +77,11 @@ const Property = ({property, index, serverAddress, updateProperties, setUpdate, 
     )
 }
 const DeleteProperty = ({token, serverAddress, property, updateProperties, setUpdate}) => {
+  const [toDelete, setToDelete] = useState([])
 
     async function deleteProperty(body) {
         return fetch(serverAddress+'/removeProperty', {
-          method: 'POST',
+          method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
             'token' : token,
@@ -97,6 +100,7 @@ const DeleteProperty = ({token, serverAddress, property, updateProperties, setUp
             const fromServer = await deleteProperty();
             if(fromServer.status){
                 setUpdate(updateProperties+1)
+                alert("Property has been deleted")
                
             }
         
@@ -104,13 +108,12 @@ const DeleteProperty = ({token, serverAddress, property, updateProperties, setUp
       
       }
     return (
-        <div>
+        <div >
        
-       <a class="btn btn-danger card-link" data-bs-toggle="modal" data-bs-target="#addProperty">Delete Property</a>
 
 
 
-<div class="modal fade" id="addProperty" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id={property.id} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -118,7 +121,9 @@ const DeleteProperty = ({token, serverAddress, property, updateProperties, setUp
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-       <p>Are you sure</p>
+       
+      
+       <p>Are you sure you want to delete: {property.title}</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
