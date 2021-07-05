@@ -10,14 +10,14 @@ app.use(cors());
 app.use(express.json());
 
 var fs = require('fs');
-/*
+
 //Load up certificates for SSL Encryption (To enable HTTPS)
 var privateKey = fs.readFileSync('/etc/letsencrypt/live/analytics.leonardmelnik.com/privkey.pem', 'utf8');
 var certificate = fs.readFileSync('/etc/letsencrypt/live/analytics.leonardmelnik.com/fullchain.pem', 'utf8');
 var credentials = {
     key: privateKey,
     cert: certificate
-};*/
+};
 
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
@@ -413,8 +413,8 @@ app.post('/updateUsers', async (req, res) => {
 });
 
    //app.listen(8080)
-  app.listen(8080)
-  //var httpsServer = https.createServer(credentials, app);
-  //httpsServer.listen(8080)
+  //app.listen(8080)
+  var httpsServer = https.createServer(credentials, app);
+  httpsServer.listen(8080)
 
 }) 
