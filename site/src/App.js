@@ -34,7 +34,7 @@ function App() {
 
 
   return(
-    <div>
+    <div >
     <BrowserRouter>
     <Header />
       <Switch>

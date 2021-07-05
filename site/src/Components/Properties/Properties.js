@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-
+import AddProperty from './AddProperty';
 
 const Properties = ({token, serverAddress, setToken}) => {
     const [properties, setProperties] = useState([])
-
+    const [updateProperties, setUpdate] = useState(0)
+  
     async function getData() {
         return fetch(serverAddress+'/get-all', {
           method: 'GET',
@@ -31,16 +32,16 @@ const Properties = ({token, serverAddress, setToken}) => {
         }
        runGet()
         
-      }, []);
+      }, [updateProperties]);
     return (
         <div className="container">
             <h1 className="display-text">Properties</h1>
-            
-            <button type="button" class="btn btn-primary">Create Property (will pop up a modal)</button>
-
+          
             <div class="row row-cols-1 row-cols-md-3 g-4">
 
             {properties.map((property, index) => (<Property property={property} index = {index}/>))}
+            <AddProperty serverAddress={serverAddress} token={token} updateProperties={updateProperties} setUpdate={setUpdate}/>
+
         </div>
       
 
@@ -73,6 +74,7 @@ const Property = ({property, index}) => {
 </div>
     )
 }
+
 
 
 export default Properties
