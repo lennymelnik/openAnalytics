@@ -60,6 +60,10 @@ const PropertyPage = ({serverAddress, token}) => {
                 <h4>{property.url}</h4>
                 {property.totalVisits}
                 </div>
+    <h3>Visits</h3>
+    <ol class="list-group list-group-numbered">
+        {Object.keys(property.paths).map((path) => (<Path path ={path } visits = {property.paths[path]}/>))}
+        </ol>
     <h3>Events</h3>
     <AddEvent serverAddress = {serverAddress} token = {token} updateProperty = {updateProperty} setUpdate = {setUpdate} property = {property}/>
     <ol class="list-group list-group-numbered">
@@ -73,6 +77,17 @@ const PropertyPage = ({serverAddress, token}) => {
         <h1>Loading</h1>
       )
    
+}
+const Path = ({path, visits}) => {
+  return(
+<li class="list-group-item d-flex justify-content-between align-items-start">
+  <div class="ms-2 me-auto">
+    <div class="fw-bold">{path}</div>
+
+  </div>
+  <span class="badge bg-primary rounded-pill">{visits}</span>
+</li>
+  )
 }
 const Event = ({event, property}) => {
     return(
