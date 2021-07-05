@@ -10,14 +10,14 @@ app.use(cors());
 app.use(express.json());
 
 var fs = require('fs');
-
+/*
 //Load up certificates for SSL Encryption (To enable HTTPS)
 var privateKey = fs.readFileSync('/etc/letsencrypt/live/analytics.leonardmelnik.com/privkey.pem', 'utf8');
 var certificate = fs.readFileSync('/etc/letsencrypt/live/analytics.leonardmelnik.com/fullchain.pem', 'utf8');
 var credentials = {
     key: privateKey,
     cert: certificate
-};
+};*/
 
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
@@ -170,6 +170,26 @@ app.post('/createEvent', async (req, res) => {
         }else{
             res.send({status: false, message: "Token not authorized"});
         }
+    }else{
+        res.send({status: false, message: "No token provided"});
+    }
+  
+});
+app.patch('/removeEvent', async (req, res) => {
+    if(req.headers.token){
+        var user = await dbo.collection("accounts").find({token: req.headers.token}).toArray()
+        if(user[0]){
+            var toPull  = {$unset : {['events.'+req.headers.id]:{id:req.headers.id}}}
+            var property = await dbo.collection("properties").updateOne({['events.'+req.headers.id]: {$exists: true}, admins : user[0].id}, toPull)
+            console.log(user[0], property[0])
+            res.send({status: true, message: "Event with that ID has been removed"});
+
+        }else{
+         
+            res.send({status: false, message: "Token not authorized"});
+        }
+       
+        
     }else{
         res.send({status: false, message: "No token provided"});
     }
@@ -374,8 +394,8 @@ app.post('/updateUsers', async (req, res) => {
 });
 
    //app.listen(8080)
-  //app.listen(8080)
-  var httpsServer = https.createServer(credentials, app);
-  httpsServer.listen(8080)
+  app.listen(8080)
+  //var httpsServer = https.createServer(credentials, app);
+  //httpsServer.listen(8080)
 
 }) 
