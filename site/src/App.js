@@ -5,6 +5,7 @@ import useToken from './Components/useToken';
 import React, { useState, useEffect } from 'react';
 import Login from './Components/Login';
 import Register from './Components/Register';
+import Home from './Containers/Home'
 import Properties from './Components/Properties/Properties';
 import { BrowserRouter, Route, Switch, useLocation} from 'react-router-dom';
 import PropertyPage from './Components/Properties/Property/PropertyPage';
@@ -39,7 +40,8 @@ function App() {
     <Header />
       <Switch>
     <Route exact path="/" >
-      <h1>Logged in</h1>
+      <Home />
+
     </Route>
     <Route path="/properties">
           <Properties serverAddress = {serverAddress} token={token} setToken={setToken}/>

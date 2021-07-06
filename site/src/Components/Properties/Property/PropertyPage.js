@@ -58,7 +58,7 @@ const PropertyPage = ({serverAddress, token}) => {
 
                 <h1>{property.title}</h1>
                 <h4>{property.url}</h4>
-                {property.totalVisits}
+                Total Views : {property.totalVisits}
                 </div>
     <h3>Visits</h3>
     <ol class="list-group list-group-numbered">
